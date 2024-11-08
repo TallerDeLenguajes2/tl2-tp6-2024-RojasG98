@@ -33,9 +33,9 @@ public class ProductoController : Controller
         return View(producto);
     }
     [HttpPost]
-    public IActionResult ModificarProducto(int idProducto,Productos productoModificado)
+    public IActionResult ModificarProducto(Productos productoModificado)
     {
-        _productoRepository.ModificarProducto(idProducto,productoModificado);
+        _productoRepository.ModificarProducto(productoModificado.IDProductos,productoModificado);
         return RedirectToAction("ListaProductos");
 
     }
