@@ -6,5 +6,5 @@ public interface IProductoRepository
     public List<Productos> listarProductos();
     public void CrearProducto(Productos producto);
     public void eliminarProducto(int idProducto);
-    public void modificarProducto(int idProducto, Productos productos);
+    public void ModificarProducto(int idProducto, Productos productos);
 }

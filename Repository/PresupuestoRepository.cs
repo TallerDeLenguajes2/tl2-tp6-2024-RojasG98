@@ -15,7 +15,7 @@ public class PresupuestoRepository : IPresupuestoRepository
             var command = new SqliteCommand(queryString, connection);
             command.Parameters.Add(new SqliteParameter("@id", presupuesto.IdPresupuesto));
             command.Parameters.Add(new SqliteParameter("@nombre", presupuesto.NombreDestinatario));
-            command.Parameters.Add(new SqliteParameter("@fecha", DateTime.Now.ToString("yyyy/M/d")));
+            command.Parameters.Add(new SqliteParameter("@fecha", DateTime.Now.ToString("yyyy-M-d")));
             command.ExecuteNonQuery();
             connection.Close();
         }
@@ -25,8 +25,12 @@ public class PresupuestoRepository : IPresupuestoRepository
     {
         SqliteConnection connection = new SqliteConnection(connectionString);
         SqliteCommand command = connection.CreateCommand();
-        command.CommandText = $"DELETE * FROM Presupuestos WHERE id = @idSolicitado;";
+        command.CommandText = $"DELETE FROM PresupuestosDetalle WHERE idPresupuesto = @idSolicitado;";
         command.Parameters.Add(new SqliteParameter("@idSolicitado", idPresupuesto));
+        connection.Open();
+        command.ExecuteNonQuery();
+        connection.Close();
+        command.CommandText = $"DELETE FROM Presupuestos WHERE idPresupuesto = @idSolicitado;";
         connection.Open();
         command.ExecuteNonQuery();
         connection.Close();

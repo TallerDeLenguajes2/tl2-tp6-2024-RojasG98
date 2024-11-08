@@ -1,0 +1,15 @@
+@model Presupuestos
+
+<form asp-controller="Presupuesto" asp-action="CrearPresupuesto" class="container mt-4">
+    <section class="mb-3">
+        <label asp-for="@Model.IdPresupuesto" class="form-label"></label>
+        <input asp-for="@Model.IdPresupuesto" class="form-control">
+    </section>
+    <section class="mb-3">
+        <label asp-for="@Model.NombreDestinatario" class="form-label"></label>
+        <input asp-for="@Model.NombreDestinatario" class="form-control">
+    </section>
+    <section class="d-flex justify-content-center">
+        <input type="submit" value="Enviar" class="btn btn-primary">
+    </section>
+</form>

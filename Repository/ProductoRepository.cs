@@ -8,7 +8,7 @@ public class ProductoRepository : IProductoRepository
         SqliteConnection connection = new SqliteConnection(connectionString);
         var producto = new Productos();
         SqliteCommand command = connection.CreateCommand();
-        command.CommandText = "SELECT FROM dbo.Tienda WHERE idProducto = @idProducto;";
+        command.CommandText = "SELECT * FROM Productos WHERE idProducto = @idProducto;";
         command.Parameters.Add(new SqliteParameter("@idProducto", idProducto));
         connection.Open();
         using (SqliteDataReader reader = command.ExecuteReader())
@@ -68,13 +68,12 @@ public class ProductoRepository : IProductoRepository
         command.ExecuteNonQuery();
         connection.Close();
     }
-    public void modificarProducto(int idProducto, Productos productos)
+    public void ModificarProducto(int idProducto, Productos productos)
     {
         SqliteConnection connection = new SqliteConnection(connectionString);
         SqliteCommand command = connection.CreateCommand();
-        command.CommandText = $"UPDATE Productos SET idProducto = @id , Descripcion = @descripcion, Precio = @precio WHERE idProducto = @idSolicitado;";
+        command.CommandText = $"UPDATE Productos SET Descripcion = @descripcion, Precio = @precio WHERE idProducto = @idSolicitado;";
         command.Parameters.Add(new SqliteParameter("@idSolicitado", idProducto));
-        command.Parameters.Add(new SqliteParameter("@id", productos.IDProductos));
         command.Parameters.Add(new SqliteParameter("@descripcion", productos.Descripcion));
         command.Parameters.Add(new SqliteParameter("@precio", productos.Precio));
         connection.Open();
