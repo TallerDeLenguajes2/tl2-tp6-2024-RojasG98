@@ -11,7 +11,7 @@
 <body>
     <section class="container my-5">
         <h2 class="text-center mb-4">Listado de Detalles Presupuesto @Model.NombreDestinatario</h2>
-        <a asp-controller="Presupuestos" asp-action="CrearPresupuestos" class="btn btn-warning btn-sm">Agregar Producto</a>
+        <a asp-controller="Presupuesto" asp-action="AgregarProducto" asp-route-idPresupuesto="@Model.IdPresupuesto" class="btn btn-warning btn-sm">Agregar Producto</a>
         <div class="table-responsive">
             <table class="table table-striped table-hover">
                 <thead class="table-dark">
@@ -30,7 +30,7 @@
                             <td>@detalle.Producto.Descripcion</td>
                             <td>@detalle.Producto.Precio.ToString("C")</td>
                             <td>@detalle.Cantidad</td>
-                            <td>@(detalle.Producto.Precio*detalle.Cantidad)</td>
+                            <td>@((detalle.Producto.Precio*detalle.Cantidad).ToString("C"))</td>
                         </tr>
                     }
                 </tbody>

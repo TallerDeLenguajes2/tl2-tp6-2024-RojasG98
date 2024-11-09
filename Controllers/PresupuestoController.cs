@@ -23,9 +23,9 @@ public class PresupuestoController : Controller
         return View(presupuesto);
     }
     [HttpGet]
-    public IActionResult CrearPresupuesto()
+    public IActionResult CrearPresupuesto(int idPresupuesto)
     {
-        return View(new Presupuestos());
+        return View(new Presupuestos(idPresupuesto));
     }
     [HttpPost]
     public IActionResult CrearPresupuesto(Presupuestos presupuesto)
@@ -38,6 +38,18 @@ public class PresupuestoController : Controller
     {
         _presupuestoRepository.eliminarPresupuesto(idPresupuesto);
         return RedirectToAction("ListarPresupuestos");
+    }
+    [HttpGet]
+    public IActionResult AgregarProducto(int idPresupuesto)
+    {
+        var agregarProducto = new AgregarProductoViewModel(idPresupuesto);
+        return View(agregarProducto);
+    }
+    [HttpPost]
+    public IActionResult AgregarProducto(int idPresupuesto, int idProducto, int cantidad)
+    {
+        _presupuestoRepository.agregarProducto(idPresupuesto,idProducto,cantidad);
+        return RedirectToAction("VerDetalle",new{idPresupuesto = idPresupuesto});
     }
 
 }

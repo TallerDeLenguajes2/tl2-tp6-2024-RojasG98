@@ -10,6 +10,8 @@ public class Presupuestos
     public List<PresupuestosDetalle> Detalle { get => detalle; set => detalle = value; }
 
     public Presupuestos(){}
+    public Presupuestos(int idPresupuesto){ this.idPresupuesto = idPresupuesto;}
+
     public double MontoPresupuesto(){
         double monto = 0;
         foreach (var producto in Detalle)

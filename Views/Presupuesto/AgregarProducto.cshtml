@@ -1,12 +1,13 @@
-@model Presupuestos
+@model AgregarProductoViewModel
 <form asp-controller="Presupuesto" asp-action="AgregarProducto" class="container mt-4">
+    <input type="hidden" asp-for="@Model.IdPresupuesto">
     <section class="mb-3">
-        <label asp-for="@Model.IdPresupuesto" class="form-label"></label>
-        <input asp-for="@Model.IdPresupuesto" class="form-control">
+        <label asp-for="@Model.IdProducto" class="form-label"></label>
+        <input asp-for="@Model.IdProducto" class="form-control">
     </section>
     <section class="mb-3">
-        <label asp-for="@Model.NombreDestinatario" class="form-label"></label>
-        <input asp-for="@Model.NombreDestinatario" class="form-control">
+        <label asp-for="@Model.Cantidad" class="form-label"></label>
+        <input asp-for="@Model.Cantidad" class="form-control">
     </section>
     <section class="d-flex justify-content-center">
         <input type="submit" value="Enviar" class="btn btn-primary">

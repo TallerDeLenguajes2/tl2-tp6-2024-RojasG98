@@ -12,7 +12,7 @@
     <section class="container my-5 align-items-center">
         <h2 class="text-center mb-4">Listado de Presupuestos</h2>
         <section>
-            <a asp-controller="Presupuesto" asp-action="CrearPresupuesto" class="btn btn-warning btn-sm w-25">Agregar
+            <a asp-controller="Presupuesto" asp-action="CrearPresupuesto" asp-route-idPresupuesto="@(Model.Last().IdPresupuesto+1)" class="btn btn-warning btn-sm w-25">Agregar
                 Presupuesto</a>
         </section>
         <div class="table-responsive">
