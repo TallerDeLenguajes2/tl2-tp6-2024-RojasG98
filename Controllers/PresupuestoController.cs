@@ -28,9 +28,9 @@ public class PresupuestoController : Controller
         return View(new Presupuestos(idPresupuesto));
     }
     [HttpPost]
-    public IActionResult CrearPresupuesto(Presupuestos presupuesto)
+    public IActionResult CrearPresupuesto(Presupuestos presupuesto,int idCliente)
     {
-        _presupuestoRepository.CrearPresupuesto(presupuesto);
+        _presupuestoRepository.CrearPresupuesto(presupuesto,idCliente);
         return RedirectToAction("ListarPresupuestos");
     }
     [HttpGet]

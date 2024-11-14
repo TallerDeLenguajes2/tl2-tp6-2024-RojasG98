@@ -6,15 +6,15 @@ public class PresupuestoRepository : IPresupuestoRepository
 {
     private string connectionString = "Data Source=dataBase/Tienda.db;Cache=Shared";
 
-    public void CrearPresupuesto(Presupuestos presupuesto)
+    public void CrearPresupuesto(Presupuestos presupuesto, int idCliente)
     {
-        var queryString = $"INSERT INTO Presupuestos (idPresupuesto,NombreDestinatario,FechaCreacion) VALUES (@id,@nombre,@fecha);";
+        var queryString = $"INSERT INTO Presupuestos (idPresupuesto,idCliente,FechaCreacion) VALUES (@id,@idcliente,@fecha);";
         using (SqliteConnection connection = new SqliteConnection(connectionString))
         {
             connection.Open();
             var command = new SqliteCommand(queryString, connection);
             command.Parameters.Add(new SqliteParameter("@id", presupuesto.IdPresupuesto));
-            command.Parameters.Add(new SqliteParameter("@nombre", presupuesto.NombreDestinatario));
+            command.Parameters.Add(new SqliteParameter("@idCliente", idCliente));
             command.Parameters.Add(new SqliteParameter("@fecha", DateTime.Now.ToString("yyyy-M-d")));
             command.ExecuteNonQuery();
             connection.Close();
@@ -41,7 +41,7 @@ public class PresupuestoRepository : IPresupuestoRepository
         SqliteConnection connection = new SqliteConnection(connectionString);
         var presupuestos = new List<Presupuestos>();
         SqliteCommand command = connection.CreateCommand();
-        command.CommandText = "SELECT * FROM Presupuestos LEFT JOIN (PresupuestosDetalle INNER JOIN Productos USING(idProducto))USING(idPresupuesto)";
+        command.CommandText = "SELECT * FROM (Presupuestos INNER JOIN Clientes USING(idCliente))LEFT JOIN (PresupuestosDetalle INNER JOIN Productos USING(idProducto))USING(idPresupuesto)";
         connection.Open();
         using (SqliteDataReader reader = command.ExecuteReader())
         {
@@ -50,8 +50,12 @@ public class PresupuestoRepository : IPresupuestoRepository
                 var presupuesto = new Presupuestos();
 
                 presupuesto.IdPresupuesto = Convert.ToInt32(reader["idPresupuesto"]);
-                presupuesto.NombreDestinatario = reader["NombreDestinatario"].ToString();
-
+                var cliente = new Clientes();
+                cliente.IdCliente = Convert.ToInt32(reader["idCliente"]);
+                cliente.Nombre = reader["Nombre"].ToString();
+                cliente.Email = reader["Email"].ToString();
+                cliente.Telefono = reader["Telefono"].ToString();
+                presupuesto.Cliente = cliente;
                 var detalle = new PresupuestosDetalle();
                 if (reader["Cantidad"] != DBNull.Value && reader["idProducto"] != DBNull.Value)
                 {
@@ -99,7 +103,7 @@ public class PresupuestoRepository : IPresupuestoRepository
         SqliteCommand command = connection.CreateCommand();
         command.CommandText = @"
         SELECT p.idPresupuesto,p.NombreDestinatario,pr.idProducto, pr.Descripcion,pr.precio,pd.Cantidad
-        FROM Presupuestos AS p 
+        FROM (Presupuestos AS p INNER JOIN cliente USING(idCliente))
         LEFT JOIN PresupuestosDetalle AS pd ON p.idPresupuesto = pd.idPresupuesto
         LEFT JOIN Productos AS pr ON pd.idProducto = pr.idProducto
         WHERE p.idPresupuesto = @idPresupuesto;
@@ -115,7 +119,12 @@ public class PresupuestoRepository : IPresupuestoRepository
                 if (reader["idPresupuesto"] != DBNull.Value)
                 {
                     presupuesto.IdPresupuesto = Convert.ToInt32(reader["idPresupuesto"]);
-                    presupuesto.NombreDestinatario = reader["NombreDestinatario"].ToString();
+                    var cliente = new Clientes();
+                    cliente.IdCliente = Convert.ToInt32(reader["idCliente"]);
+                    cliente.Nombre = reader["Nombre"].ToString();
+                    cliente.Email = reader["Email"].ToString();
+                    cliente.Telefono = reader["Telefono"].ToString();
+                    presupuesto.Cliente = cliente;
                     var detalle = new PresupuestosDetalle();
                     var producto = new Productos();
                     if (reader["idProducto"] != DBNull.Value)
