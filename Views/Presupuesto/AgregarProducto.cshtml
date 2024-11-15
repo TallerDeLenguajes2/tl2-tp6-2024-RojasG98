@@ -2,8 +2,14 @@
 <form asp-controller="Presupuesto" asp-action="AgregarProducto" class="container mt-4">
     <input type="hidden" asp-for="@Model.IdPresupuesto">
     <section class="mb-3">
+        <section class="mb-3">
         <label asp-for="@Model.IdProducto" class="form-label"></label>
-        <input asp-for="@Model.IdProducto" class="form-control">
+        <select asp-for="@Model.IdProducto" class="form-control">
+        @foreach(Productos producto in @Model.ListaProductos){
+            <option value="@producto.IDProductos">@producto.Descripcion</option>
+        }
+        </select>
+    </section>
     </section>
     <section class="mb-3">
         <label asp-for="@Model.Cantidad" class="form-label"></label>

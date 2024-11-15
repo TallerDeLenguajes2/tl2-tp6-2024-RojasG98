@@ -18,11 +18,14 @@ public class ProductoController : Controller
     [HttpGet]
     public IActionResult CrearProducto()
     {
-        return View(new Productos());
+        int ultimoId = _productoRepository.listarProductos().Last().IDProductos;
+        return View(new ProductoViewModel(ultimoId));
     }
     [HttpPost]
-    public IActionResult CrearProducto(Productos nuevoProducto)
+    public IActionResult CrearProducto(ProductoViewModel ProductoVM)
     {
+        if(!ModelState.IsValid) return RedirectToAction("CrearProducto");
+        var nuevoProducto = new Productos(ProductoVM.idProducto,ProductoVM.descripcion,ProductoVM.precio);
         _productoRepository.CrearProducto(nuevoProducto);
         return RedirectToAction("ListaProductos");
     }

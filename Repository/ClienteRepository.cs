@@ -77,7 +77,7 @@ class ClienteRepository : IClienteRepository
             while (reader.Read())
             {
                 var cliente = new Clientes();
-                cliente.IdCliente = Convert.ToInt32(reader["idCliente"]);
+                cliente.IdCliente = Convert.ToInt32(reader["idClientes"]);
                 cliente.Nombre = reader["Nombre"].ToString();
                 cliente.Email = reader["Email"].ToString();
                 cliente.Telefono = reader["Telefono"].ToString();

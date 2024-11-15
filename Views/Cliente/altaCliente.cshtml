@@ -1,0 +1,23 @@
+@model Clientes
+
+<form asp-controller="Cliente" asp-action="altaCliente" class="container mt-4">
+    <section class="mb-3">
+        <label asp-for="@Model.IdCliente" class="form-label"></label>
+        <input asp-for="@Model.IdCliente" class="form-control">
+    </section>
+    <section class="mb-3">
+        <label asp-for="@Model.Nombre" class="form-label"></label>
+        <input asp-for="@Model.Nombre" class="form-control">
+    </section>
+    <section class="mb-3">
+        <label asp-for="@Model.Email" class="form-label"></label>
+        <input asp-for="@Model.Email" class="form-control">
+    </section>
+    <section class="mb-3">
+        <label asp-for="@Model.Telefono" class="form-label"></label>
+        <input asp-for="@Model.Telefono" class="form-control">
+    </section>
+    <section class="d-flex justify-content-center">
+        <input type="submit" value="Enviar" class="btn btn-primary">
+    </section>
+</form>

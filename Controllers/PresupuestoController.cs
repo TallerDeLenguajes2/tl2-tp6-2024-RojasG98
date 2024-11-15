@@ -4,10 +4,14 @@ namespace tl2_tp6_2024_RojasG98.Controllers;
 public class PresupuestoController : Controller
 {
     private IPresupuestoRepository _presupuestoRepository;
+    private readonly IClienteRepository _clienteRepository;
+    private readonly IProductoRepository _productoRepository;
 
-    public PresupuestoController(IPresupuestoRepository presupuestoRepository)
+    public PresupuestoController(IPresupuestoRepository presupuestoRepository, IClienteRepository clienteRepository, IProductoRepository productoRepository)
     {
         _presupuestoRepository = presupuestoRepository;
+        _clienteRepository = clienteRepository;
+        _productoRepository = productoRepository;
     }
 
     [HttpGet]
@@ -25,7 +29,10 @@ public class PresupuestoController : Controller
     [HttpGet]
     public IActionResult CrearPresupuesto(int idPresupuesto)
     {
-        return View(new Presupuestos(idPresupuesto));
+        var clientes = _clienteRepository.listarClientes();
+        var presupuesto = new Presupuestos(idPresupuesto);
+        var presupuestoViewModel = new CrearPresupuestoViewModel(presupuesto,clientes);
+        return View(presupuestoViewModel);
     }
     [HttpPost]
     public IActionResult CrearPresupuesto(Presupuestos presupuesto,int idCliente)
@@ -42,7 +49,8 @@ public class PresupuestoController : Controller
     [HttpGet]
     public IActionResult AgregarProducto(int idPresupuesto)
     {
-        var agregarProducto = new AgregarProductoViewModel(idPresupuesto);
+        var listaProductos = _productoRepository.listarProductos();
+        var agregarProducto = new AgregarProductoViewModel(idPresupuesto,listaProductos);
         return View(agregarProducto);
     }
     [HttpPost]

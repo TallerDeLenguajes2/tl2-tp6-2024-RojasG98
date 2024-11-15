@@ -10,7 +10,7 @@
 
 <body>
     <section class="container my-5">
-        <h2 class="text-center mb-4">Listado de Detalles Presupuesto @Model.NombreDestinatario</h2>
+        <h2 class="text-center mb-4">Listado de Detalles Presupuesto @Model.Cliente.Nombre</h2>
         <a asp-controller="Presupuesto" asp-action="AgregarProducto" asp-route-idPresupuesto="@Model.IdPresupuesto" class="btn btn-warning btn-sm">Agregar Producto</a>
         <div class="table-responsive">
             <table class="table table-striped table-hover">

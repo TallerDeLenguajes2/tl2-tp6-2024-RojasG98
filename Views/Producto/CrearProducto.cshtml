@@ -1,17 +1,18 @@
-@model Productos
+@section Scripts{<partial name="_ValidationScriptsPartial"/>}
+@model ProductoViewModel
 
 <form asp-controller="Producto" asp-action="CrearProducto" class="container mt-4">
     <section class="mb-3">
-        <label asp-for="@Model.IDProductos" class="form-label"></label>
-        <input asp-for="@Model.IDProductos" class="form-control">
+        <label asp-for="@Model.idProducto" class="form-label"></label>
+        <input asp-for="@Model.idProducto" class="form-control">
     </section>
     <section class="mb-3">
-        <label asp-for="@Model.Descripcion" class="form-label"></label>
-        <input asp-for="@Model.Descripcion" class="form-control">
+        <label asp-for="@Model.descripcion" class="form-label"></label>
+        <input asp-for="@Model.descripcion" class="form-control">
     </section>
     <section class="mb-3">
-        <label asp-for="@Model.Precio" class="form-label"></label>
-        <input asp-for="@Model.Precio" class="form-control">
+        <label asp-for="@Model.precio" class="form-label"></label>
+        <input asp-for="@Model.precio" class="form-control">
     </section>
     <section class="d-flex justify-content-center">
         <input type="submit" value="Enviar" class="btn btn-primary">

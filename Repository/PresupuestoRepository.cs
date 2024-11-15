@@ -8,7 +8,7 @@ public class PresupuestoRepository : IPresupuestoRepository
 
     public void CrearPresupuesto(Presupuestos presupuesto, int idCliente)
     {
-        var queryString = $"INSERT INTO Presupuestos (idPresupuesto,idCliente,FechaCreacion) VALUES (@id,@idcliente,@fecha);";
+        var queryString = $"INSERT INTO Presupuestos (idPresupuesto,idClientes,FechaCreacion) VALUES (@id,@idCliente,@fecha);";
         using (SqliteConnection connection = new SqliteConnection(connectionString))
         {
             connection.Open();
@@ -41,7 +41,7 @@ public class PresupuestoRepository : IPresupuestoRepository
         SqliteConnection connection = new SqliteConnection(connectionString);
         var presupuestos = new List<Presupuestos>();
         SqliteCommand command = connection.CreateCommand();
-        command.CommandText = "SELECT * FROM (Presupuestos INNER JOIN Clientes USING(idCliente))LEFT JOIN (PresupuestosDetalle INNER JOIN Productos USING(idProducto))USING(idPresupuesto)";
+        command.CommandText = "SELECT * FROM (Presupuestos INNER JOIN Clientes USING(idClientes))LEFT JOIN (PresupuestosDetalle INNER JOIN Productos USING(idProducto))USING(idPresupuesto)";
         connection.Open();
         using (SqliteDataReader reader = command.ExecuteReader())
         {
@@ -51,7 +51,7 @@ public class PresupuestoRepository : IPresupuestoRepository
 
                 presupuesto.IdPresupuesto = Convert.ToInt32(reader["idPresupuesto"]);
                 var cliente = new Clientes();
-                cliente.IdCliente = Convert.ToInt32(reader["idCliente"]);
+                cliente.IdCliente = Convert.ToInt32(reader["idClientes"]);
                 cliente.Nombre = reader["Nombre"].ToString();
                 cliente.Email = reader["Email"].ToString();
                 cliente.Telefono = reader["Telefono"].ToString();
@@ -102,8 +102,8 @@ public class PresupuestoRepository : IPresupuestoRepository
         var presupuesto = new Presupuestos();
         SqliteCommand command = connection.CreateCommand();
         command.CommandText = @"
-        SELECT p.idPresupuesto,p.NombreDestinatario,pr.idProducto, pr.Descripcion,pr.precio,pd.Cantidad
-        FROM (Presupuestos AS p INNER JOIN cliente USING(idCliente))
+        SELECT p.idPresupuesto,c.idClientes,c.Nombre,c.Email,c.Telefono,pd.Cantidad,pr.idProducto,pr.Precio,pr.Descripcion
+        FROM (Presupuestos AS p INNER JOIN Clientes AS c USING(idClientes))
         LEFT JOIN PresupuestosDetalle AS pd ON p.idPresupuesto = pd.idPresupuesto
         LEFT JOIN Productos AS pr ON pd.idProducto = pr.idProducto
         WHERE p.idPresupuesto = @idPresupuesto;
@@ -120,7 +120,7 @@ public class PresupuestoRepository : IPresupuestoRepository
                 {
                     presupuesto.IdPresupuesto = Convert.ToInt32(reader["idPresupuesto"]);
                     var cliente = new Clientes();
-                    cliente.IdCliente = Convert.ToInt32(reader["idCliente"]);
+                    cliente.IdCliente = Convert.ToInt32(reader["idClientes"]);
                     cliente.Nombre = reader["Nombre"].ToString();
                     cliente.Email = reader["Email"].ToString();
                     cliente.Telefono = reader["Telefono"].ToString();
