@@ -15,27 +15,30 @@ public class ClienteController : Controller
         return View(clientes);
     }
     [HttpGet]
-    public ActionResult altaCliente()
+    public ActionResult altaCliente(int idCliente)
     {
-        return View(new Clientes());
+        return View(new ClienteViewModel(idCliente));
     }
     [HttpPost]
-    public ActionResult altaCliente(Clientes nuevoCliente)
+    public ActionResult altaCliente(ClienteViewModel clienteVM)
     {
+        if(!ModelState.IsValid) return RedirectToAction("altaCliente");
+        var nuevoCliente = new Clientes(clienteVM.IdCliente,clienteVM.Nombre,clienteVM.Email,clienteVM.Telefono);
         _clienteRepository.altaCliente(nuevoCliente);
-        return RedirectToAction("ListaClientes");
+        return RedirectToAction("listarClientes");
     }
     [HttpGet]
     public ActionResult modificarCliente(int idCliente)
     {
         var clienteModificar = _clienteRepository.clientePorId(idCliente);
-        return View(clienteModificar);
+        return View(new ClienteViewModel(clienteModificar.IdCliente,clienteModificar.Nombre,clienteModificar.Email,clienteModificar.Telefono));
     }
     [HttpPost]
-    public ActionResult modificarCliente(Clientes clienteModificar)
+    public ActionResult modificarCliente(ClienteViewModel cliente)
     {
+        var clienteModificar = new Clientes(cliente.IdCliente,cliente.Nombre,cliente.Email,cliente.Telefono); 
         _clienteRepository.modificarCliente(clienteModificar.IdCliente, clienteModificar);
-        return RedirectToAction("ListaClientes");
+        return RedirectToAction("listarClientes");
     }
     [HttpGet]
     public ActionResult eliminarCliente(int idCliente)

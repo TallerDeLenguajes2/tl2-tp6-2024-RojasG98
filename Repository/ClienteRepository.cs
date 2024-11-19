@@ -6,7 +6,7 @@ class ClienteRepository : IClienteRepository
     private string connectionString = "Data Source=dataBase/Tienda.db;Cache=Shared";
     public void altaCliente(Clientes clienteNuevo)
     {
-        var queryString = $"INSERT INTO Clientes (idCliente,Nombre,Email,Telefono) VALUES (@id,@nombre,@mail,@telefono);";
+        var queryString = $"INSERT INTO Clientes (idClientes,Nombre,Email,Telefono) VALUES (@id,@nombre,@mail,@telefono);";
         using (SqliteConnection connection = new SqliteConnection(connectionString))
         {
             connection.Open();
@@ -28,7 +28,7 @@ class ClienteRepository : IClienteRepository
         command.CommandText = @"
         SELECT *
         FROM Clientes
-        WHERE idCliente = @idClienteBuscado;
+        WHERE idClientes = @idClienteBuscado;
         ";
         command.Parameters.Add(new SqliteParameter("@idClienteBuscado", idCliente));
         connection.Open();
@@ -36,9 +36,9 @@ class ClienteRepository : IClienteRepository
         {
             while (reader.Read())
             {
-                if (reader["idCliente"] != DBNull.Value)
+                if (reader["idClientes"] != DBNull.Value)
                 {
-                    cliente.IdCliente = Convert.ToInt32(reader["idCliente"]);
+                    cliente.IdCliente = Convert.ToInt32(reader["idClientes"]);
                     cliente.Nombre = reader["Nombre"].ToString();
                     cliente.Email = reader["Email"].ToString();
                     cliente.Telefono = reader["Telefono"].ToString();
@@ -59,7 +59,7 @@ class ClienteRepository : IClienteRepository
         connection.Open();
         command.ExecuteNonQuery();
         connection.Close();
-        command.CommandText = $"DELETE FROM Clientes WHERE idCliente = @idClienteEliminar;";
+        command.CommandText = $"DELETE FROM Clientes WHERE idClientes = @idClienteEliminar;";
         connection.Open();
         command.ExecuteNonQuery();
         connection.Close();
@@ -92,9 +92,9 @@ class ClienteRepository : IClienteRepository
     {
         SqliteConnection connection = new SqliteConnection(connectionString);
         SqliteCommand command = connection.CreateCommand();
-        command.CommandText = @"UPDATE Productos 
+        command.CommandText = @"UPDATE Clientes 
                                 SET Nombre = @nombre, Email = @Email, Telefono = @Telefono 
-                                WHERE idCliente = @idClienteModificar;";
+                                WHERE idClientes = @idClienteModificar;";
         command.Parameters.Add(new SqliteParameter("@idClienteModificar", idCliente));
         command.Parameters.Add(new SqliteParameter("@nombre", cliente.Nombre));
         command.Parameters.Add(new SqliteParameter("@Email", cliente.Email));
