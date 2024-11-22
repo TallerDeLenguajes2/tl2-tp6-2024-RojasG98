@@ -10,6 +10,9 @@ public class LoginController : Controller
         _iUserRepository = iUserRepository;
     }
     public IActionResult Index(){
+        if(HttpContext.Session.GetString("IsAuthenticated") == "true"){
+            return RedirectToAction("Index","Home");
+        }
         var model =  new LoginViewModel
         {
             IsAuthenticated = HttpContext.Session.GetString("IsAuthenticated") == "true" 
@@ -23,11 +26,12 @@ public class LoginController : Controller
             model.ErrorMessage = "Por favor ingrese su nombre de usuario y contraseña.";
             return View("Index", model);
         }
-        var usuario  = _iUserRepository.GetUser(model.Username,model.Password);
+        var usuario  = _iUserRepository.getUsuario(model.Username,model.Password);
         if(usuario != null){
             HttpContext.Session.SetString("IsAuthenticated", "true");
             HttpContext.Session.SetString("Username", usuario.Username);
-            HttpContext.Session.SetString("AccessLevels", usuario.AccessLevels.ToString());
+            HttpContext.Session.SetString("Nombre",usuario.Name);
+            HttpContext.Session.SetString("AccessLevels", usuario.AccessLevels);
             return RedirectToAction("Index","Home");
         }
         model.ErrorMessage = "Credenciales invalidas";

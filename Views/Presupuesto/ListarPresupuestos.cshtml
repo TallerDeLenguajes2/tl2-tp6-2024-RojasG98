@@ -1,28 +1,28 @@
 @model List<Presupuestos>
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-
+@{
+    var accessLevel = ViewData["AccessLevels"];
+}
 <body>
     <section class="container my-5 align-items-center">
         <h2 class="text-center mb-4">Listado de Presupuestos</h2>
-        <section>
-            <a asp-controller="Presupuesto" asp-action="CrearPresupuesto" asp-route-idPresupuesto="@(Model.Last().IdPresupuesto+1)" class="btn btn-warning btn-sm w-25">Agregar
-                Presupuesto</a>
-        </section>
+        @if (accessLevel.ToString() == "Administrador")
+        {
+            <section>
+                <a asp-controller="Presupuesto" asp-action="CrearPresupuesto"
+                    asp-route-idPresupuesto="@(Model.Last().IdPresupuesto+1)" class="btn btn-warning btn-sm w-25">Agregar
+                    Presupuesto</a>
+            </section>
+        }
         <div class="table-responsive">
             <table class="table table-striped table-hover">
                 <thead class="table-dark">
                     <tr>
                         <th>Nombre</th>
                         <th>Ver Detalle</th>
-                        <th>Eliminar</th>
-
+                        @if (accessLevel.ToString() == "Administrador")
+                        {
+                            <th>Eliminar</th>
+                        }
                     </tr>
                 </thead>
                 <tbody>
@@ -33,10 +33,13 @@
                             <td><a asp-controller="Presupuesto" asp-action="VerDetalle"
                                     asp-route-idPresupuesto="@presupuesto.IdPresupuesto"
                                     class="btn btn-warning btn-sm">Mostrar Presupuesto</a></td>
-                            <td><a asp-controller="Presupuesto" asp-action="EliminarPresupuesto"
-                                    asp-route-idPresupuesto="@presupuesto.IdPresupuesto"
-                                    class="btn btn-danger btn-sm">Eliminar</a>
-                            </td>
+                            @if (accessLevel.ToString() == "Administrador")
+                            {
+                                <td><a asp-controller="Presupuesto" asp-action="EliminarPresupuesto"
+                                        asp-route-idPresupuesto="@presupuesto.IdPresupuesto"
+                                        class="btn btn-danger btn-sm">Eliminar</a>
+                                </td>
+                            }
                         </tr>
                     }
                 </tbody>

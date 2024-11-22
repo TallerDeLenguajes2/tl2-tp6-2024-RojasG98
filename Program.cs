@@ -4,7 +4,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddScoped<IProductoRepository, ProductoRepository>();
 builder.Services.AddScoped<IPresupuestoRepository, PresupuestoRepository>();
 builder.Services.AddScoped<IClienteRepository, ClienteRepository>();
-builder.Services.AddScoped<IUserRepository,inMemoryUserRepository>();
+builder.Services.AddScoped<IUserRepository,UsuarioRepository>();
 
 // Habilitar servicios de sesiones
 builder.Services.AddSession(options =>
